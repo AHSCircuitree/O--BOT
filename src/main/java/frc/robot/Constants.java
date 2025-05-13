@@ -10,6 +10,9 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
 public final class Constants {
+  public static final class Channels {
+    public static final int pivotEncoderChannel = 0;
+  }
   public static final class DriveConstants {
 
     public static final double kMaxSpeedMetersPerSecond = 1.7; // prev: 4.8
@@ -86,5 +89,16 @@ public final class Constants {
 
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
+  }
+
+  public static final class pivot { 
+    public static final int PivotMotorID = 0;
+    public static final double pivotP = 0;
+    public static final double pivotI = 0;
+    public static final double pivotD = 0;
+
+    public static final double pivotOffset = 0;
+    public static final double pivotThreshold = 6;
+    public static final double upperPivotThreshold = 60;
   }
 }
