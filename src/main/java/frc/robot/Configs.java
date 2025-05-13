@@ -30,7 +30,7 @@ public final class Configs {
                     .pid(0.04, 0, 0)
                     .velocityFF(drivingVelocityFeedForward)
                     .outputRange(-1, 1);
-
+                
             turningConfig
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(20);
