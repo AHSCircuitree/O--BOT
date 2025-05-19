@@ -92,8 +92,8 @@ public final class Constants {
   }
 
   public static final class pivot { 
-    public static final int PivotMotorID = 0;
-    public static final double pivotP = 0;
+    public static final int PivotMotorID = 25;
+    public static final double pivotP = 0.1;
     public static final double pivotI = 0;
     public static final double pivotD = 0;
 
