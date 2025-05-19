@@ -21,11 +21,14 @@ import com.revrobotics.RelativeEncoder;
 
 import frc.robot.Configs;
 
+// Add setspeed method or create PidController for driving TalonFX Motor (flare 2024 code will help)
+
 public class MAXSwerveModule {
   private final TalonFX m_drivingTalon;
   private final SparkMax m_turningSpark;
 
   private final AbsoluteEncoder m_turningEncoder;
+  
 
   private final SparkClosedLoopController m_turningClosedLoopController;
 
@@ -64,7 +67,7 @@ public class MAXSwerveModule {
   public SwerveModuleState getState() {
     // Apply chassis angular offset to the encoder position to get the position
     // relative to the chassis.
-    return new SwerveModuleState(m_drivingTalon.get(),
+    return new SwerveModuleState(m_drivingTalon.getVelocity().getValueAsDouble(),
         new Rotation2d(m_turningEncoder.getPosition() - m_chassisAngularOffset));
   }
 
@@ -97,6 +100,8 @@ public class MAXSwerveModule {
 
     // Command driving and turning SPARKS towards their respective setpoints.
     m_turningClosedLoopController.setReference(correctedDesiredState.angle.getRadians(), ControlType.kPosition);
+
+  
 
     m_desiredState = desiredState;
   }
