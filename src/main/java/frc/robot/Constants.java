@@ -70,6 +70,8 @@ public final class Constants {
         public static final double kS = 0.034;
         public static final double kV = 0.3;
         public static final double kA = 0.018;
+
+        public static final double kMaxSpeedMetersPerSecond = 4.8;
   }
 
   public static final class OIConstants {
