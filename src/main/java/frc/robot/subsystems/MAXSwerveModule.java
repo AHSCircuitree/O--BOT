@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -15,20 +16,25 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.ctre.phoenix6.controls.MotionMagicVelocityDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 
+
 import frc.robot.Configs;
+import frc.robot.Constants.ModuleConstants;
+import frc.robot.Conversions;
 
 // Add setspeed method or create PidController for driving TalonFX Motor (flare 2024 code will help)
 
 public class MAXSwerveModule {
-  private final TalonFX m_drivingTalon;
-  private final SparkMax m_turningSpark;
+  public final TalonFX m_drivingTalon;
+  public final SparkMax m_turningSpark;
 
   private final AbsoluteEncoder m_turningEncoder;
-  
+  SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(ModuleConstants.kS, ModuleConstants.kV,
+      ModuleConstants.kA);
 
   private final SparkClosedLoopController m_turningClosedLoopController;
 
@@ -42,7 +48,7 @@ public class MAXSwerveModule {
    * Encoder.
    */
   public MAXSwerveModule(int drivingCANId, int turningCANId, double chassisAngularOffset) {
-    m_drivingTalon = new TalonFX(drivingCANId);
+    m_drivingTalon = new TalonFX(drivingCANId, "FRC 1599B");
     m_turningSpark = new SparkMax(turningCANId, MotorType.kBrushless);
 
     m_turningEncoder = m_turningSpark.getAbsoluteEncoder();
@@ -92,8 +98,9 @@ public class MAXSwerveModule {
   public void setDesiredState(SwerveModuleState desiredState) {
     // Apply chassis angular offset to the desired state.
     SwerveModuleState correctedDesiredState = new SwerveModuleState();
-    correctedDesiredState.speedMetersPerSecond = desiredState.speedMetersPerSecond;
+    correctedDesiredState.speedMetersPerSecond = desiredState.speedMetersPerSecond; 
     correctedDesiredState.angle = desiredState.angle.plus(Rotation2d.fromRadians(m_chassisAngularOffset));
+    setSpeed(desiredState);
 
     // Optimize the reference state to avoid spinning further than 90 degrees.
     correctedDesiredState.optimize(new Rotation2d(m_turningEncoder.getPosition()));
@@ -109,5 +116,11 @@ public class MAXSwerveModule {
   /** Zeroes all the SwerveModule encoders. */
   public void resetEncoders() {
     m_drivingTalon.setPosition(0);
+  }
+
+  private void setSpeed(SwerveModuleState desiredState) {
+    double velocity = Conversions.falconToRPM(Conversions.MPSToFalcon(desiredState.speedMetersPerSecond,
+ModuleConstants.kWheelCircumferenceMeters, ModuleConstants.kDrivingMotorReduction), 1) / 60.0;
+    m_drivingTalon.setControl(new MotionMagicVelocityDutyCycle(velocity));
   }
 }

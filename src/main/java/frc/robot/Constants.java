@@ -48,6 +48,7 @@ public final class Constants {
     public static final int kRearRightTurningCanId = 12; //12 - 14
 
     public static final boolean kGyroReversed = false;
+    public static final double kMaxAcceleration = 1.85;
   }
 
   public static final class ModuleConstants {
@@ -65,6 +66,10 @@ public final class Constants {
     public static final double kDrivingMotorReduction = (45.0 * 22) / (kDrivingMotorPinionTeeth * 15);
     public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters)
         / kDrivingMotorReduction;
+
+        public static final double kS = 0.034;
+        public static final double kV = 0.3;
+        public static final double kA = 0.018;
   }
 
   public static final class OIConstants {
