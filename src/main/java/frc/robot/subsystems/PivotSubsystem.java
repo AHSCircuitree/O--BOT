@@ -25,7 +25,7 @@ public class PivotSubsystem extends SubsystemBase {
 
     pivotMotor = new TalonFX(pivot.PivotMotorID);
     pidController = new PIDController(pivot.pivotP, pivot.pivotI, pivot.pivotD);
-    pivotEncoder = new DutyCycleEncoder(Channels.pivotEncoderChannel);
+    //pivotEncoder = new DutyCycleEncoder(Channels.pivotEncoderChannel);
 
     pivotMotor.setNeutralMode(NeutralModeValue.Brake);
 

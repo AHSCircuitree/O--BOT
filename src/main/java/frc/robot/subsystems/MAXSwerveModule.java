@@ -51,11 +51,11 @@ public class MAXSwerveModule {
    * MAXSwerve Module built with NEOs, SPARKS MAX, and a Through Bore
    * Encoder.
    */
-  public MAXSwerveModule(int drivingCANId, int turningCANId, double chassisAngularOffset, String i, boolean inverted) {
+  public MAXSwerveModule(int drivingCANId, int turningCANId, double chassisAngularOffset, String i, double offset) {
     m_drivingTalon = new TalonFX(drivingCANId, "FRC 1599B");
     m_turningSpark = new SparkMax(turningCANId, MotorType.kBrushless);
     id = i;
-    m_drivingTalon.setInverted(inverted);
+    m_chassisAngularOffset = offset;
 
     m_turningEncoder = m_turningSpark.getAbsoluteEncoder();
 
@@ -68,7 +68,11 @@ public class MAXSwerveModule {
         PersistMode.kPersistParameters);
 
     m_chassisAngularOffset = chassisAngularOffset;
-    m_desiredState.angle = new Rotation2d(m_turningEncoder.getPosition());
+    m_desiredState.angle = new Rotation2d(0);
+  }
+
+  public double getAngle() {
+    return ((m_turningEncoder.getPosition() - m_chassisAngularOffset) * 360) * (Math.PI / 180);
   }
 
   /**
@@ -80,7 +84,12 @@ public class MAXSwerveModule {
     // Apply chassis angular offset to the encoder position to get the position
     // relative to the chassis.
     return new SwerveModuleState(m_drivingTalon.getVelocity().getValueAsDouble(),
-        new Rotation2d(m_turningEncoder.getPosition() - m_chassisAngularOffset));
+        new Rotation2d(getAngle()));
+  }
+
+  public double getTurn()
+  {
+    return m_turningEncoder.getPosition();
   }
 
   /**
@@ -93,7 +102,7 @@ public class MAXSwerveModule {
     // relative to the chassis.
     return new SwerveModulePosition(
       m_drivingTalon.get(),
-        new Rotation2d(m_turningEncoder.getPosition() - m_chassisAngularOffset));
+        new Rotation2d(getAngle()));
   }
 
   /**
@@ -111,13 +120,12 @@ public class MAXSwerveModule {
     setSpeed(desiredState);
 
     // Optimize the reference state to avoid spinning further than 90 degrees.
-    correctedDesiredState.optimize(new Rotation2d(m_turningEncoder.getPosition()));
+    SmartDashboard.putString(id + " pre ", correctedDesiredState.toString());
+    correctedDesiredState.optimize(new Rotation2d(getAngle()));
+    SmartDashboard.putString(id + " post ", correctedDesiredState.toString());
 
     // Command driving and turning SPARKS towards their respective setpoints.
     m_turningClosedLoopController.setReference(correctedDesiredState.angle.getRadians(), ControlType.kPosition);
-
-  
-    SmartDashboard.putString(id + "final state ", correctedDesiredState.toString());
 
     m_desiredState = desiredState;
   }

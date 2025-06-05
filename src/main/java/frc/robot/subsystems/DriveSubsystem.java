@@ -4,6 +4,8 @@
 
 // if wanting to add a limelight poseestimater odometry
 
+//odometry not being reset
+
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -22,7 +24,9 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.MotorConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -36,28 +40,28 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.kFrontLeftTurningCanId,
       DriveConstants.kFrontLeftChassisAngularOffset,
       "frontleft",
-      true);
+      MotorConstants.flOffset);
 
   private static final MAXSwerveModule m_frontRight = new MAXSwerveModule(
       DriveConstants.kFrontRightDrivingCanId,
       DriveConstants.kFrontRightTurningCanId,
       DriveConstants.kFrontRightChassisAngularOffset,
       "frontright",
-      false);
+      MotorConstants.frOffset);
 
   private static final MAXSwerveModule m_rearLeft = new MAXSwerveModule(
       DriveConstants.kRearLeftDrivingCanId,
       DriveConstants.kRearLeftTurningCanId,
       DriveConstants.kBackLeftChassisAngularOffset,
       "rearleft",
-      true);
+      MotorConstants.rlOffset);
 
   private static final MAXSwerveModule m_rearRight = new MAXSwerveModule(
       DriveConstants.kRearRightDrivingCanId,
       DriveConstants.kRearRightTurningCanId,
       DriveConstants.kBackRightChassisAngularOffset,
       "rearright",
-      true);
+      MotorConstants.rrOffset);
 
   // The gyro sensor
   private final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
@@ -90,6 +94,19 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
+
+    SmartDashboard.putNumber("Z", m_gyro.getAngle(IMUAxis.kZ));
+    SmartDashboard.putNumber("Y", m_gyro.getAngle(IMUAxis.kY));
+    SmartDashboard.putNumber("X", m_gyro.getAngle(IMUAxis.kX));
+    SmartDashboard.putNumber("fl", m_frontLeft.getTurn());
+    SmartDashboard.putNumber("fr", m_frontRight.getTurn());
+    SmartDashboard.putNumber("rr", m_rearRight.getTurn());
+    SmartDashboard.putNumber("rl", m_rearRight.getTurn());
+
+    SmartDashboard.putNumber("fl adj", m_frontLeft.getAngle());
+    SmartDashboard.putNumber("fr adj", m_frontRight.getAngle());
+    SmartDashboard.putNumber("rr adj", m_rearRight.getAngle());
+    SmartDashboard.putNumber("rl adj", m_rearRight.getAngle());
   }
 
   /**
