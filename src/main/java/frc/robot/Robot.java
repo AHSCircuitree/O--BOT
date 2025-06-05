@@ -4,7 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -48,8 +50,33 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {}
 
+  DutyCycleEncoder encoder0 = new DutyCycleEncoder(0);
+  DutyCycleEncoder encoder1 = new DutyCycleEncoder(1);
+  DutyCycleEncoder encoder2 = new DutyCycleEncoder(2);
+  DutyCycleEncoder encoder3 = new DutyCycleEncoder(3);
+  DutyCycleEncoder encoder4 = new DutyCycleEncoder(4);
+  DutyCycleEncoder encoder5 = new DutyCycleEncoder(5);
+  DutyCycleEncoder encoder6 = new DutyCycleEncoder(6);
+  DutyCycleEncoder encoder7 = new DutyCycleEncoder(7);
+  //DutyCycleEncoder encoder8 = new DutyCycleEncoder(8);
+  //DutyCycleEncoder encoder9 = new DutyCycleEncoder(9);
+  int ticks = 0;
+
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    SmartDashboard.putNumber("encoder value channel 0", encoder0.get());
+    SmartDashboard.putNumber("encoder value channel 1", encoder1.get());
+    SmartDashboard.putNumber("encoder value channel 2", encoder2.get());
+    SmartDashboard.putNumber("encoder value channel 3", encoder3.get());
+    SmartDashboard.putNumber("encoder value channel 4", encoder4.get());
+    SmartDashboard.putNumber("encoder value channel 5", encoder5.get());
+    SmartDashboard.putNumber("encoder value channel 6", encoder6.get());
+    SmartDashboard.putNumber("encoder value channel 7", encoder7.get());
+    //SmartDashboard.putNumber("encoder value channel 8", encoder8.get());
+    //SmartDashboard.putNumber("encoder value channel 9", encoder9.get());
+    SmartDashboard.putNumber("ticks", ticks);
+    ticks++;
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
@@ -78,8 +105,12 @@ public class Robot extends TimedRobot {
   }
 
   /** This function is called periodically during operator control. */
+
+  
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    
+  }
 
   @Override
   public void testInit() {

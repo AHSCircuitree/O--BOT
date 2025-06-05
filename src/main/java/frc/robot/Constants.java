@@ -11,7 +11,7 @@ import edu.wpi.first.math.util.Units;
 
 public final class Constants {
   public static final class Channels {
-    public static final int pivotEncoderChannel = 0;
+    public static final int pivotEncoderChannel = -1;
   }
   public static final class DriveConstants {
 
@@ -37,9 +37,9 @@ public final class Constants {
     public static final double kBackRightChassisAngularOffset = Math.PI / 2;
 
     // SPARK MAX CAN IDs
+    public static final int kFrontLeftDrivingCanId = 17;
     public static final int kFrontRightDrivingCanId = 13;
     public static final int kRearLeftDrivingCanId = 15;
-    public static final int kFrontLeftDrivingCanId = 17;
     public static final int kRearRightDrivingCanId = 11;
 
     public static final int kFrontLeftTurningCanId = 16; //16 - 10
@@ -47,6 +47,7 @@ public final class Constants {
     public static final int kFrontRightTurningCanId = 14; //14 - 16
     public static final int kRearRightTurningCanId = 12; //12 - 14
 
+    public static final int gyroCanId = 41;
     public static final boolean kGyroReversed = false;
     public static final double kMaxAcceleration = 1.85;
   }
@@ -107,5 +108,12 @@ public final class Constants {
     public static final double pivotOffset = 0;
     public static final double pivotThreshold = 6;
     public static final double upperPivotThreshold = 60;
+  }
+
+  public static final class MotorConstants {
+    public static final double frOffset = 3.13;
+    public static final double flOffset = 4.7;
+    public static final double rrOffset = 1.58;
+    public static final double rlOffset = 1.58;
   }
 }
