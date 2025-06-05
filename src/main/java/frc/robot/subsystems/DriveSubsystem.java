@@ -65,12 +65,12 @@ public class DriveSubsystem extends SubsystemBase {
       MotorConstants.rrOffset);
 
   // The gyro sensor
-  private final Pigeon2 m_gyro = new Pigeon2(41, "1599B");
+  private final Pigeon2 m_gyro = new Pigeon2(41, "FRC 1599B");
 
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
       DriveConstants.kDriveKinematics,
-      Rotation2d.fromDegrees(m_gyro.getRoll().getValueAsDouble()),
+      Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble()),
       new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -88,7 +88,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     // Update the odometry in the periodic block
     m_odometry.update(
-        Rotation2d.fromDegrees(m_gyro.getRoll().getValueAsDouble()),
+        Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -126,7 +126,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        Rotation2d.fromRadians(m_gyro.getRoll().getValueAsDouble()),
+        Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
