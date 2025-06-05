@@ -111,9 +111,9 @@ public final class Constants {
   }
 
   public static final class MotorConstants {
-    public static final double frOffset = 3.13;
-    public static final double flOffset = 4.7;
-    public static final double rrOffset = 1.58;
-    public static final double rlOffset = 1.58;
+    public static final double frOffset = 0;
+    public static final double flOffset = 0;
+    public static final double rrOffset = 0;
+    public static final double rlOffset = 0;
   }
 }
